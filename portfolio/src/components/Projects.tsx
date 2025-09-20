@@ -3,6 +3,11 @@ import styled, { keyframes } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Eye, Code, Globe } from 'lucide-react';
 import LazyImage from './LazyImage';
+import project1Image from '../assets/project1.png';
+import project2Image from '../assets/project2.png';
+import project3Image from '../assets/project3.png';
+import project4Image from '../assets/project4.png';
+import project5Image from '../assets/project5.png';
 
 const glow = keyframes`
   0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.25); }
@@ -117,16 +122,19 @@ const ProjectImageContainer = styled.div`
   height: 250px;
   overflow: hidden;
   background: linear-gradient(45deg, #0a0a0f, #1a1a2e);
+  border-radius: 15px 15px 0 0;
 `;
 
 const ProjectImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   transition: transform 0.3s ease;
+  transform: scale(1.15); /* Default zoom for better fit */
   
   ${ProjectCard}:hover & {
-    transform: scale(1.1);
+    transform: scale(1.25); /* More zoom on hover */
   }
 `;
 
@@ -233,75 +241,64 @@ const ProjectLink = styled(motion.a)`
 const Projects: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState('All');
 
-  const categories = ['All', 'Web App', 'Mobile', 'API', 'UI/UX'];
+  const categories = ['All', 'Web App', 'AI/ML', 'Tools'];
 
   const projects = [
     {
       id: 1,
-      title: 'Cloud-Native E-Commerce Platform',
+      title: 'Compound Interest Calculator',
       category: 'Web App',
-      description: 'Microservices-based e-commerce platform deployed on AWS with Docker containers, Kubernetes orchestration, and CI/CD pipelines using GitHub Actions.',
-      image: '/api/placeholder/400/250',
-      technologies: ['React', 'Node.js', 'AWS', 'Docker', 'Kubernetes', 'MongoDB'],
-      liveUrl: 'https://example.com',
+      description: 'A comprehensive compound interest calculator built with React. Features interactive charts, multiple calculation modes, and beautiful UI for financial planning and investment analysis.',
+      image: project1Image,
+      technologies: ['React', 'JavaScript', 'Chart.js', 'CSS3', 'Vercel'],
+      liveUrl: 'https://compound-intrest-omega.vercel.app/',
       githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
       icon: <Globe size={16} />
     },
     {
       id: 2,
-      title: 'DevOps Infrastructure Automation',
-      category: 'API',
-      description: 'Infrastructure as Code using Terraform to provision AWS resources, automated with Jenkins CI/CD pipeline for seamless deployments and monitoring.',
-      image: '/api/placeholder/400/250',
-      technologies: ['Terraform', 'AWS', 'Jenkins', 'Docker', 'Python', 'Ansible'],
-      liveUrl: 'https://example.com',
-      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
-      icon: <Code size={16} />
-    },
-    {
-      id: 3,
-      title: 'Serverless Blog API',
-      category: 'API',
-      description: 'High-performance serverless API built with AWS Lambda, API Gateway, and DynamoDB. Features auto-scaling, cost optimization, and real-time analytics.',
-      image: '/api/placeholder/400/250',
-      technologies: ['AWS Lambda', 'API Gateway', 'DynamoDB', 'Node.js', 'Serverless Framework'],
-      liveUrl: 'https://example.com',
-      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
-      icon: <Code size={16} />
-    },
-    {
-      id: 4,
-      title: 'Container Monitoring Dashboard',
-      category: 'UI/UX',
-      description: 'Real-time monitoring dashboard for Kubernetes clusters with container metrics, logs visualization, and alert management using modern React and D3.js.',
-      image: '/api/placeholder/400/250',
-      technologies: ['React', 'D3.js', 'Kubernetes API', 'WebSocket', 'Material-UI'],
-      liveUrl: 'https://example.com',
-      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
-      icon: <Eye size={16} />
-    },
-    {
-      id: 5,
-      title: 'Multi-Cloud Deployment Tool',
+      title: 'Smart Delivery Route Optimizer',
       category: 'Web App',
-      description: 'Web application for managing deployments across AWS, Azure, and GCP. Features environment management, rollback capabilities, and deployment analytics.',
-      image: '/api/placeholder/400/250',
-      technologies: ['React', 'Python', 'AWS', 'Azure', 'GCP', 'Terraform'],
-      liveUrl: 'https://example.com',
+      description: 'Intelligent delivery route optimization system using advanced algorithms. Reduces delivery time and costs with real-time tracking and dynamic route planning.',
+      image: project2Image,
+      technologies: ['React', 'Node.js', 'Maps API', 'Algorithm', 'Optimization'],
+      liveUrl: 'https://smart-delivery-route-optimizer.vercel.app/',
       githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
       icon: <Globe size={16} />
     },
     {
-      id: 6,
-      title: 'Kubernetes Auto-Scaler',
-      category: 'API',
-      description: 'Custom Kubernetes controller for intelligent auto-scaling based on custom metrics. Reduces costs by 40% while maintaining performance SLAs.',
-      image: '/api/placeholder/400/250',
-      technologies: ['Go', 'Kubernetes', 'Prometheus', 'Grafana', 'Docker'],
-      liveUrl: 'https://example.com',
+      id: 3,
+      title: 'Weather App',
+      category: 'Web App',
+      description: 'Modern weather application with real-time weather data, 7-day forecast, interactive maps, and beautiful animations. Features location-based weather updates.',
+      image: project3Image,
+      technologies: ['HTML5', 'CSS3', 'JavaScript', 'Weather API', 'Geolocation'],
+      liveUrl: 'https://santoshreddy-1362004.github.io/weatherapp/',
       githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Globe size={16} />
+    },
+    {
+      id: 4,
+      title: 'Blog Management System',
+      category: 'Web App',
+      description: 'Full-featured blog platform with user authentication, rich text editor, comment system, and admin dashboard. Built with modern web technologies.',
+      image: project4Image,
+      technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'JWT', 'Rich Editor'],
+      liveUrl: 'https://github.com/santoshreddy-1362004/BlogProject',
+      githubUrl: 'https://github.com/santoshreddy-1362004/BlogProject',
       icon: <Code size={16} />
     },
+    {
+      id: 5,
+      title: 'AI Chatbot Assistant',
+      category: 'AI/ML',
+      description: 'Intelligent chatbot with natural language processing capabilities. Features context-aware responses, multi-language support, and seamless user experience.',
+      image: project5Image,
+      technologies: ['JavaScript', 'NLP', 'AI/ML', 'HTML5', 'CSS3', 'API Integration'],
+      liveUrl: 'https://santoshreddy-1362004.github.io/chatbot/',
+      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Globe size={16} />
+    }
   ];
 
   const filteredProjects = activeFilter === 'All' 
