@@ -1,0 +1,434 @@
+import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Github, Eye, Code, Globe } from 'lucide-react';
+import LazyImage from './LazyImage';
+
+const glow = keyframes`
+  0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.25); }
+  50% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), 0 0 35px rgba(0, 255, 255, 0.3); }
+`;
+
+const ProjectsContainer = styled.section`
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #0f0f23 100%);
+  position: relative;
+`;
+
+const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+`;
+
+const SectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: 4rem;
+`;
+
+const SectionTitle = styled(motion.h2)`
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+`;
+
+const SectionSubtitle = styled(motion.p)`
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+`;
+
+const FilterTabs = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+`;
+
+const FilterTab = styled(motion.button)<{ active: boolean }>`
+  background: ${props => props.active 
+    ? 'linear-gradient(45deg, #00ffff, #ff00ff)' 
+    : 'transparent'};
+  border: 2px solid ${props => props.active ? 'transparent' : '#00ffff'};
+  color: ${props => props.active ? 'white' : '#00ffff'};
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.active 
+      ? 'linear-gradient(45deg, #00ffff, #ff00ff)' 
+      : 'rgba(0, 255, 255, 0.1)'};
+    transform: translateY(-2px);
+  }
+`;
+
+const ProjectsGrid = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+`;
+
+const ProjectCard = styled(motion.div)`
+  background: rgba(20, 20, 35, 0.8);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  /* Performance optimizations */
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  &:hover {
+    transform: translateY(-10px) translateZ(0);
+    box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.5);
+  }
+
+  /* Reduced animation on low-performance devices */
+  .low-performance & {
+    transition: none;
+    
+    &:hover {
+      animation: none;
+    }
+  }
+`;
+
+const ProjectImageContainer = styled.div`
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  background: linear-gradient(45deg, #0a0a0f, #1a1a2e);
+`;
+
+const ProjectImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  
+  ${ProjectCard}:hover & {
+    transform: scale(1.1);
+  }
+`;
+
+const ProjectOverlay = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 0;
+  
+  ${ProjectCard}:hover & {
+    opacity: 1;
+  }
+`;
+
+const OverlayButton = styled(motion.button)`
+  background: rgba(0, 255, 255, 0.2);
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(0, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+`;
+
+const ProjectContent = styled.div`
+  padding: 2rem;
+`;
+
+const ProjectCategory = styled.span`
+  color: #ff00ff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+const ProjectTitle = styled.h3`
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0 1rem 0;
+`;
+
+const ProjectDescription = styled.p`
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+`;
+
+const TechStack = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+const TechTag = styled.span`
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+`;
+
+const ProjectLinks = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const ProjectLink = styled(motion.a)`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #00ffff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+`;
+
+const Projects: React.FC = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+
+  const categories = ['All', 'Web App', 'Mobile', 'API', 'UI/UX'];
+
+  const projects = [
+    {
+      id: 1,
+      title: 'Cloud-Native E-Commerce Platform',
+      category: 'Web App',
+      description: 'Microservices-based e-commerce platform deployed on AWS with Docker containers, Kubernetes orchestration, and CI/CD pipelines using GitHub Actions.',
+      image: '/api/placeholder/400/250',
+      technologies: ['React', 'Node.js', 'AWS', 'Docker', 'Kubernetes', 'MongoDB'],
+      liveUrl: 'https://example.com',
+      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Globe size={16} />
+    },
+    {
+      id: 2,
+      title: 'DevOps Infrastructure Automation',
+      category: 'API',
+      description: 'Infrastructure as Code using Terraform to provision AWS resources, automated with Jenkins CI/CD pipeline for seamless deployments and monitoring.',
+      image: '/api/placeholder/400/250',
+      technologies: ['Terraform', 'AWS', 'Jenkins', 'Docker', 'Python', 'Ansible'],
+      liveUrl: 'https://example.com',
+      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Code size={16} />
+    },
+    {
+      id: 3,
+      title: 'Serverless Blog API',
+      category: 'API',
+      description: 'High-performance serverless API built with AWS Lambda, API Gateway, and DynamoDB. Features auto-scaling, cost optimization, and real-time analytics.',
+      image: '/api/placeholder/400/250',
+      technologies: ['AWS Lambda', 'API Gateway', 'DynamoDB', 'Node.js', 'Serverless Framework'],
+      liveUrl: 'https://example.com',
+      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Code size={16} />
+    },
+    {
+      id: 4,
+      title: 'Container Monitoring Dashboard',
+      category: 'UI/UX',
+      description: 'Real-time monitoring dashboard for Kubernetes clusters with container metrics, logs visualization, and alert management using modern React and D3.js.',
+      image: '/api/placeholder/400/250',
+      technologies: ['React', 'D3.js', 'Kubernetes API', 'WebSocket', 'Material-UI'],
+      liveUrl: 'https://example.com',
+      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Eye size={16} />
+    },
+    {
+      id: 5,
+      title: 'Multi-Cloud Deployment Tool',
+      category: 'Web App',
+      description: 'Web application for managing deployments across AWS, Azure, and GCP. Features environment management, rollback capabilities, and deployment analytics.',
+      image: '/api/placeholder/400/250',
+      technologies: ['React', 'Python', 'AWS', 'Azure', 'GCP', 'Terraform'],
+      liveUrl: 'https://example.com',
+      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Globe size={16} />
+    },
+    {
+      id: 6,
+      title: 'Kubernetes Auto-Scaler',
+      category: 'API',
+      description: 'Custom Kubernetes controller for intelligent auto-scaling based on custom metrics. Reduces costs by 40% while maintaining performance SLAs.',
+      image: '/api/placeholder/400/250',
+      technologies: ['Go', 'Kubernetes', 'Prometheus', 'Grafana', 'Docker'],
+      liveUrl: 'https://example.com',
+      githubUrl: 'https://github.com/santoshreddy-1362004/DevOnePortfolio',
+      icon: <Code size={16} />
+    },
+  ];
+
+  const filteredProjects = activeFilter === 'All' 
+    ? projects 
+    : projects.filter(project => project.category === activeFilter);
+
+  return (
+    <ProjectsContainer id="projects">
+      <Container>
+        <SectionHeader>
+          <SectionTitle
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            My Projects
+          </SectionTitle>
+          <SectionSubtitle
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            A showcase of my latest work and creative projects
+          </SectionSubtitle>
+        </SectionHeader>
+
+        <FilterTabs
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={{ once: true }}
+        >
+          {categories.map((category, index) => (
+            <FilterTab
+              key={category}
+              active={activeFilter === category}
+              onClick={() => setActiveFilter(category)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 * index }}
+              viewport={{ once: true }}
+            >
+              {category}
+            </FilterTab>
+          ))}
+        </FilterTabs>
+
+        <ProjectsGrid>
+          <AnimatePresence mode="wait">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 * index }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+              >
+                <ProjectImageContainer>
+                  <LazyImage 
+                    src={project.image} 
+                    alt={project.title}
+                    placeholder="Loading project image..."
+                  />
+                  <ProjectOverlay
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <OverlayButton
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Eye size={20} />
+                    </OverlayButton>
+                    <OverlayButton
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Github size={20} />
+                    </OverlayButton>
+                  </ProjectOverlay>
+                </ProjectImageContainer>
+
+                <ProjectContent>
+                  <ProjectCategory>{project.category}</ProjectCategory>
+                  <ProjectTitle>{project.title}</ProjectTitle>
+                  <ProjectDescription>{project.description}</ProjectDescription>
+                  
+                  <TechStack>
+                    {project.technologies.map((tech, techIndex) => (
+                      <TechTag key={techIndex}>{tech}</TechTag>
+                    ))}
+                  </TechStack>
+
+                  <ProjectLinks>
+                    <ProjectLink
+                      href={project.liveUrl}
+                      target="_blank"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {project.icon}
+                      Live Demo
+                    </ProjectLink>
+                    <ProjectLink
+                      href={project.githubUrl}
+                      target="_blank"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Github size={16} />
+                      Code
+                    </ProjectLink>
+                  </ProjectLinks>
+                </ProjectContent>
+              </ProjectCard>
+            ))}
+          </AnimatePresence>
+        </ProjectsGrid>
+      </Container>
+    </ProjectsContainer>
+  );
+};
+
+export default Projects;
