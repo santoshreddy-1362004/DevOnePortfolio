@@ -8,11 +8,6 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
 `;
 
-const rotate = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
-
 const SkillsContainer = styled.section`
   min-height: 100vh;
   padding: 6rem 2rem;

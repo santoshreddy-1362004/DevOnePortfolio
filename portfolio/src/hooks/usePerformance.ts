@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 // Smooth scroll utility with performance optimizations
 export const useSmoothScroll = () => {
@@ -119,17 +119,11 @@ export const useIntersectionObserver = (
 
 // Debounce utility for performance
 export const useDebounce = (callback: Function, delay: number) => {
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    
-    const debouncedCallback = (...args: any[]) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => callback(...args), delay);
-    };
-
-    // Return the debounced function for use
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [callback, delay]);
+  return useCallback(
+    (...args: any[]) => {
+      const timeoutId = setTimeout(() => callback(...args), delay);
+      return () => clearTimeout(timeoutId);
+    },
+    [callback, delay]
+  );
 };

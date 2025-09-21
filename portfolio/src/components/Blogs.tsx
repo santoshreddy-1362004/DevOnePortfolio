@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Clock, ArrowRight, Eye, ThumbsUp } from 'lucide-react';
 import blog1Image from '../assets/blog1.png';
 import blog2Image from '../assets/blog2.png';
 import blog3Image from '../assets/blog3.png';
-
-const glow = keyframes`
-  0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.25); }
-  50% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), 0 0 35px rgba(0, 255, 255, 0.3); }
-`;
 
 const BlogsContainer = styled.section`
   min-height: 100vh;

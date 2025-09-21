@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Eye, Code, Globe } from 'lucide-react';
 import LazyImage from './LazyImage';
@@ -8,11 +8,6 @@ import project2Image from '../assets/project2.png';
 import project3Image from '../assets/project3.png';
 import project4Image from '../assets/project4.png';
 import project5Image from '../assets/project5.png';
-
-const glow = keyframes`
-  0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 255, 0.25); }
-  50% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), 0 0 35px rgba(0, 255, 255, 0.3); }
-`;
 
 const ProjectsContainer = styled.section`
   min-height: 100vh;
@@ -123,19 +118,6 @@ const ProjectImageContainer = styled.div`
   overflow: hidden;
   background: linear-gradient(45deg, #0a0a0f, #1a1a2e);
   border-radius: 15px 15px 0 0;
-`;
-
-const ProjectImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 0.3s ease;
-  transform: scale(1.15); /* Default zoom for better fit */
-  
-  ${ProjectCard}:hover & {
-    transform: scale(1.25); /* More zoom on hover */
-  }
 `;
 
 const ProjectOverlay = styled(motion.div)`
