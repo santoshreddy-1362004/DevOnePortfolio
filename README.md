@@ -32,7 +32,6 @@
 - **Hardware Optimization** - Custom performance monitoring
 
 ### 🎨 **Modern UI/UX**
-- **Dark/Light Theme Toggle** - Persistent theme switching with smooth transitions
 - **Glassmorphism Effects** - Modern translucent design elements
 - **Responsive Design** - Perfect on all devices (mobile, tablet, desktop)
 - **Smooth Animations** - Framer Motion powered micro-interactions
@@ -297,5 +296,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
   <p><em>Built with ❤️ and lots of ☕ by Santosh Reddy</em></p>
-  <p><strong>🏆 Designed to win hackathon and impress recruiters! 🏆</strong></p>
+  <p><strong>🏆 Designed to win DevOne hackathon and impress recruiters! 🏆</strong></p>
 </div>
