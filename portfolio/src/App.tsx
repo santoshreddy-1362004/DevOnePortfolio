@@ -16,7 +16,7 @@ import Footer from './components/Footer';
 import { useSmoothScroll, usePerformanceMonitor } from './hooks/usePerformance';
 
 // Global Styles
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle<{ theme: any }>`
   * {
     margin: 0;
     padding: 0;
@@ -37,8 +37,8 @@ const GlobalStyle = createGlobalStyle`
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: #0a0a0f;
-    color: white;
+    background: ${props => props.theme.background};
+    color: ${props => props.theme.text};
     overflow-x: hidden;
     /* Optimize rendering performance */
     transform: translateZ(0);
@@ -46,6 +46,7 @@ const GlobalStyle = createGlobalStyle`
     will-change: scroll-position;
     /* Enable GPU acceleration for scrolling */
     -webkit-overflow-scrolling: touch;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Optimize scrollbar performance */
@@ -120,29 +121,61 @@ const AppContainer = styled.div`
   -webkit-backface-visibility: hidden;
 `;
 
-const theme = {
-  colors: {
-    primary: '#00ffff',
-    secondary: '#ff00ff',
-    accent: '#ffff00',
-    background: '#0a0a0f',
-    surface: '#1a1a2e',
-    text: '#ffffff',
-    textSecondary: 'rgba(255, 255, 255, 0.8)',
-  },
-  breakpoints: {
-    mobile: '768px',
-    tablet: '1024px',
-    desktop: '1400px',
-  },
+// Theme configuration
+const darkTheme = {
+  background: '#0a0a0f',
+  primary: '#00ffff',
+  secondary: '#ff00ff',
+  accent: '#ffff00',
+  surface: '#1a1a2e',
+  surfaceVariant: 'rgba(20, 20, 35, 0.8)',
+  text: '#ffffff',
+  textSecondary: 'rgba(255, 255, 255, 0.8)',
+  textMuted: 'rgba(255, 255, 255, 0.6)',
+  border: 'rgba(0, 255, 255, 0.2)',
+  borderHover: 'rgba(0, 255, 255, 0.5)',
+  shadow: 'rgba(0, 255, 255, 0.2)',
+  gradient: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%)',
+};
+
+const lightTheme = {
+  background: '#ffffff',
+  primary: '#0066cc',
+  secondary: '#9933cc',
+  accent: '#ff6600',
+  surface: '#f8f9fa',
+  surfaceVariant: 'rgba(248, 249, 250, 0.9)',
+  text: '#1a1a1a',
+  textSecondary: 'rgba(26, 26, 26, 0.8)',
+  textMuted: 'rgba(26, 26, 26, 0.6)',
+  border: 'rgba(0, 102, 204, 0.2)',
+  borderHover: 'rgba(0, 102, 204, 0.5)',
+  shadow: 'rgba(0, 102, 204, 0.15)',
+  gradient: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%)',
 };
 
 function App() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('darkMode');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   // Initialize performance optimizations
   useSmoothScroll();
   usePerformanceMonitor();
+
+  // Get current theme
+  const currentTheme = isDark ? darkTheme : lightTheme;
+
+  // Save theme preference
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDark));
+  }, [isDark]);
+
+  // Toggle theme function
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+  };
 
   useEffect(() => {
     // Initialize AOS with optimized settings for performance
@@ -209,13 +242,9 @@ function App() {
     };
   }, []);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-  };
-
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
+    <ThemeProvider theme={currentTheme}>
+      <GlobalStyle theme={currentTheme} />
       <AppContainer>
         <Navigation isDark={isDark} toggleTheme={toggleTheme} />
         <Hero />

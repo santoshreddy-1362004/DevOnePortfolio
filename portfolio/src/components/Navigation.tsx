@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, useTheme } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 
@@ -8,16 +8,17 @@ const glow = keyframes`
   50% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.6); }
 `;
 
-const NavContainer = styled(motion.nav)`
+const NavContainer = styled(motion.nav)<{ theme: any }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
   padding: 1rem 2rem;
-  background: rgba(10, 10, 15, 0.9);
+  background: ${props => props.theme.surfaceVariant};
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  border-bottom: 1px solid ${props => props.theme.border};
+  transition: all 0.3s ease;
 `;
 
 const NavContent = styled.div`
@@ -50,8 +51,8 @@ const NavLinks = styled.div`
   }
 `;
 
-const NavLink = styled(motion.a)`
-  color: #ffffff;
+const NavLink = styled(motion.a)<{ theme: any }>`
+  color: ${props => props.theme.text};
   text-decoration: none;
   font-weight: 500;
   position: relative;
@@ -60,9 +61,9 @@ const NavLink = styled(motion.a)`
   transition: all 0.3s ease;
 
   &:hover {
-    color: #00ffff;
-    background: rgba(0, 255, 255, 0.1);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    color: ${props => props.theme.primary};
+    background: ${props => props.theme.primary}20;
+    box-shadow: 0 0 15px ${props => props.theme.primary}30;
   }
 
   &::after {
@@ -72,7 +73,7 @@ const NavLink = styled(motion.a)`
     left: 50%;
     width: 0;
     height: 2px;
-    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    background: linear-gradient(45deg, ${props => props.theme.primary}, ${props => props.theme.secondary});
     transition: all 0.3s ease;
     transform: translateX(-50%);
   }
@@ -82,31 +83,31 @@ const NavLink = styled(motion.a)`
   }
 `;
 
-const ThemeToggle = styled(motion.button)`
-  background: rgba(0, 255, 255, 0.1);
-  border: 1px solid rgba(0, 255, 255, 0.3);
+const ThemeToggle = styled(motion.button)<{ theme: any }>`
+  background: ${props => props.theme.primary}20;
+  border: 1px solid ${props => props.theme.border};
   border-radius: 50%;
   width: 45px;
   height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #00ffff;
+  color: ${props => props.theme.primary};
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    background: ${props => props.theme.primary}30;
+    box-shadow: 0 0 20px ${props => props.theme.primary}40;
     transform: scale(1.1);
   }
 `;
 
-const MobileMenuButton = styled(motion.button)`
+const MobileMenuButton = styled(motion.button)<{ theme: any }>`
   display: none;
   background: transparent;
   border: none;
-  color: #00ffff;
+  color: ${props => props.theme.primary};
   font-size: 1.5rem;
   cursor: pointer;
 
@@ -117,32 +118,32 @@ const MobileMenuButton = styled(motion.button)`
   }
 `;
 
-const MobileMenu = styled(motion.div)`
+const MobileMenu = styled(motion.div)<{ theme: any }>`
   position: fixed;
   top: 80px;
   left: 0;
   right: 0;
-  background: rgba(10, 10, 15, 0.95);
+  background: ${props => props.theme.surfaceVariant};
   backdrop-filter: blur(15px);
   padding: 2rem;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  border-bottom: 1px solid ${props => props.theme.border};
   
   @media (min-width: 769px) {
     display: none;
   }
 `;
 
-const MobileNavLink = styled(motion.a)`
+const MobileNavLink = styled(motion.a)<{ theme: any }>`
   display: block;
-  color: #ffffff;
+  color: ${props => props.theme.text};
   text-decoration: none;
   font-weight: 500;
   padding: 1rem 0;
-  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  border-bottom: 1px solid ${props => props.theme.border};
   transition: all 0.3s ease;
 
   &:hover {
-    color: #00ffff;
+    color: ${props => props.theme.primary};
     padding-left: 1rem;
   }
 `;
@@ -155,6 +156,7 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ isDark, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const theme = useTheme() as any;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -189,8 +191,8 @@ const Navigation: React.FC<NavigationProps> = ({ isDark, toggleTheme }) => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         style={{
           background: isScrolled 
-            ? 'rgba(10, 10, 15, 0.95)' 
-            : 'rgba(10, 10, 15, 0.9)',
+            ? `${theme.surfaceVariant}f0` 
+            : theme.surfaceVariant,
         }}
       >
         <NavContent>
@@ -269,6 +271,25 @@ const Navigation: React.FC<NavigationProps> = ({ isDark, toggleTheme }) => {
                 {item.name}
               </MobileNavLink>
             ))}
+            
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              paddingTop: '1rem',
+              borderTop: `1px solid ${theme.border}`,
+              marginTop: '1rem'
+            }}>
+              <ThemeToggle
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                onClick={toggleTheme}
+                whileHover={{ rotate: 180 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              </ThemeToggle>
+            </div>
           </MobileMenu>
         )}
       </AnimatePresence>

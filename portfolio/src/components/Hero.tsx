@@ -245,6 +245,16 @@ const Hero: React.FC = () => {
     'Tech Innovator'
   ];
 
+  // Download CV function
+  const downloadCV = () => {
+    const link = document.createElement('a');
+    link.href = '/assets/Santosh_Reddy_Resume.pdf';
+    link.download = 'Santosh_Reddy_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       const current = texts[currentIndex];
@@ -350,6 +360,7 @@ const Hero: React.FC = () => {
           <SecondaryButton
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={downloadCV}
           >
             Download CV
             <Download size={20} />

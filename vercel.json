@@ -1,0 +1,15 @@
+{
+  "buildCommand": "cd portfolio && npm run build",
+  "outputDirectory": "portfolio/dist",
+  "installCommand": "cd portfolio && npm install",
+  "devCommand": "cd portfolio && npm run dev",
+  "framework": "vite",
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    }
+  ]
+}
