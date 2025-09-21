@@ -9,7 +9,7 @@
 </div>
 
 <div align="center">
-  <h3>🏆 A stunning, interactive developer portfolio designed to win hackathons</h3>
+  <h3>🏆 A stunning, interactive developer portfolio designed to win DevOne hackathon</h3>
   <p><em>Featuring 3D graphics, real-time animations, and cutting-edge web technologies</em></p>
 </div>
 
@@ -17,9 +17,9 @@
 
 ## 🌟 Live Demo
 
-🔗 **[View Live Portfolio →](https://your-portfolio-url.com)**
+🔗 **[View Live Portfolio →](https://dev-one-portfolio-kwp96deuo-santoshreddy-1362004s-projects.vercel.app/)**
 
-> **Note**: Replace with your actual deployment URL
+> **Experience the stunning 3D portfolio in action! Click the link above to see all features live.**
 
 ---
 
@@ -297,5 +297,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
   <p><em>Built with ❤️ and lots of ☕ by Santosh Reddy</em></p>
-  <p><strong>🏆 Designed to win hackathons and impress recruiters! 🏆</strong></p>
+  <p><strong>🏆 Designed to win hackathon and impress recruiters! 🏆</strong></p>
 </div>
