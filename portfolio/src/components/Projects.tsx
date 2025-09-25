@@ -357,12 +357,14 @@ const Projects: React.FC = () => {
                     <OverlayButton
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
+                      onClick={() => window.open(project.liveUrl, '_blank')}
                     >
                       <Eye size={20} />
                     </OverlayButton>
                     <OverlayButton
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
+                      onClick={() => window.open(project.githubUrl, '_blank')}
                     >
                       <Github size={20} />
                     </OverlayButton>

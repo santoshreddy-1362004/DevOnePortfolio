@@ -112,6 +112,8 @@ const GlobalStyle = createGlobalStyle<{ theme: any }>`
 
 const AppContainer = styled.div`
   min-height: 100vh;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
   /* Performance optimizations */
   transform: translateZ(0);
