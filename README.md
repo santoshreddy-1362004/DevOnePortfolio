@@ -17,7 +17,7 @@
 
 ## 🌟 Live Demo
 
-🔗 **[View Live Portfolio →](https://dev-one-portfolio-kwp96deuo-santoshreddy-1362004s-projects.vercel.app/)**
+🔗 **[View Live Portfolio →](https://dev-one-portfolio-czeq-iwcxupsbh-santoshreddy-1362004s-projects.vercel.app/)**
 
 > **Experience the stunning 3D portfolio in action! Click the link above to see all features live.**
 
